@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <title>Confromation page</title>
+</head>
+<body>
+
+    <div class="container" style="margin-top: 30px;">
+        <% if(id!='undefined'){ %>
+            <% if(id=='Not provided'){ %>
+            <p class="h1" style="color: red;"><%= id %></p>
+            <% } %>
+            <% if(id!='Not provided'){ %>
+                <p class="h1" style="color: green;"><%= id %></p>
+                <% } %>
+            <% } %>
+    <% if(id=='undefined'){ %>
+            
+            <% } %>
+    <% if(n!='undefined'){ %>
+    <p class="h5">Name : <%= n %></p>
+    <% } %>
+    
+    <% if(n=='undefined'){ %>
+        <p class="h2">No record</p>
+        <% } %>
+
+        <% if (id=='Not provided') { %>
+            <% if (od!='undefined') { %>
+      
+                <form action="/change_state_p" method="post">
+                    <input type="text" name="reg_no" value="<%= od %>" readonly>
+                    <input type="submit" class="btn btn-outline-success" value="Provide">
+                </form>
+                <% } %>
+            
+            <% } %>
+
+        
+
+            
+        
+            
+        
+    
+</div>
+    
+    <div class="container">
+        <a href="/" style="text-decoration: none;" class="btn btn-warning">Back to Scanner</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <title>PORT Scanner</title>
+</head>
+
+<body>
+    <div id="reader" width="600px"></div>
+
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <script>
+        function onScanSuccess(decodedText, decodedResult) {
+            // handle the scanned code as you like, for example:
+            console.log(`Code matched = ${decodedText}`, decodedResult);
+            fetch("/get_data", {
+                method: "POST",
+                body: JSON.stringify({
+                    user_id: decodedText
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.ord_id){
+                    console.log("Response from Node.js API:", data.ord_id);
+                    window.location.href = "/show_data_p/"+data.message+"&"+data.idn+"&"+data.nm+'&'+data.ord_id;
+                    }
+                    else{
+                        console.log(data);
+                        window.location.href = "/show_data/"+data.message+"&"+data.idn+"&"+data.nm;
+                    }
+                    
+                    
+                })
+                .catch(error => {
+                    console.error("Error sending data to Node.js API:", error);
+                });
+
+        }
+
+        function onScanFailure(error) {
+            console.warn(`Code scan error = ${error}`);
+        }
+
+        let html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader",
+            { fps: 12, qrbox: { width: 250, height: 250 } }, false);
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    </script>
+    
+
+    <div class="container mt-5">
+        <form action="/get_info" method="post">
+            <input type="text" name="user_id" id="usr" placeholder="Enter ID" required>
+            <input type="submit" class="btn btn-success" value="Get Info">
+        </form>
+    </div>
+</body>
+
+</html>
